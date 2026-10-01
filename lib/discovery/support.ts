@@ -20,7 +20,7 @@ export function selectionNotice(task: DiscoveryTask): string {
     return "Command guidance only. Workflow not established. Procedure not available.";
   }
   const validation = task.validationStatus ?? "not established";
-  return `Workflow available. Coverage ${task.coverageStatus}. Validation ${validation}. Inputs and the procedure are not shown on this screen.`;
+  return `Workflow available. Coverage ${task.coverageStatus}. Validation ${validation}. Enter the required inputs and generate the procedure. Ready does not authorize device execution.`;
 }
 
 export function selectedTaskHandoff(task: DiscoveryTask): SelectedTaskHandoff {

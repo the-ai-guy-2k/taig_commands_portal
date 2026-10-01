@@ -61,4 +61,4 @@ If `loadTaskCatalog` fails, the page shows the error code and message and stops.
 
 ## ACI-008 boundary
 
-This screen ends at the selected task. Capability 8 adds the dynamic task form and the procedure view. This shell does not render required-input fields, validation feedback, command blocks, or copy actions.
+Capability 8 continues from this shell. A selected workflow-backed task shows the dynamic input form and, after a READY generation, the procedure view. Command-only selection still stops at "Workflow not established. Procedure not available." See `docs/task-form-procedure-view.md`.

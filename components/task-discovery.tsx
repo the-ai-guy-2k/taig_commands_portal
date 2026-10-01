@@ -1,14 +1,27 @@
 "use client";
 
 import { useMemo, useState, type KeyboardEvent } from "react";
+import { ProcedureView } from "@/components/procedure-view";
+import { TaskForm } from "@/components/task-form";
 import { filterDiscoveryTasks } from "@/lib/discovery/filter";
 import { activityLabel, selectedTaskHandoff, selectionNotice, workflowLabel } from "@/lib/discovery/support";
 import type { DiscoveryCatalog, DiscoveryTask } from "@/lib/discovery/types";
+import { generateTaskProcedure } from "@/lib/portal/actions";
+import { validationMessage } from "@/lib/portal/messages";
+import { applyRun, beginGeneration, changeInput, emptyFormSession, selectTask } from "@/lib/portal/session";
+import type { FormSession, TaskFormView } from "@/lib/portal/types";
 
-export function TaskDiscovery({ catalog }: { catalog: DiscoveryCatalog }) {
+export function TaskDiscovery({
+  catalog,
+  forms,
+}: {
+  catalog: DiscoveryCatalog;
+  forms: Record<string, TaskFormView>;
+}) {
   const [text, setText] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [session, setSession] = useState<FormSession>(emptyFormSession);
 
   const visible = useMemo(
     () => filterDiscoveryTasks(catalog.tasks, { text, categoryId: categoryId || null }),
@@ -91,18 +104,46 @@ export function TaskDiscovery({ catalog }: { catalog: DiscoveryCatalog }) {
             <ul className="task-list" data-task-list onKeyDown={onListKeyDown}>
               {visible.map((task) => (
                 <li key={task.taskId}>
-                  <TaskButton task={task} pressed={task.taskId === selectedId} onSelect={setSelectedId} />
+                  <TaskButton task={task} pressed={task.taskId === selectedId} onSelect={chooseTask} />
                 </li>
               ))}
             </ul>
           )}
         </section>
-        <aside className="panel selected-panel" id="selected-task" aria-live="polite">
-          {selected ? <SelectedTask task={selected} /> : <p>Select a task to see its support state.</p>}
+        <aside className="panel selected-panel" id="selected-task">
+          {selected ? (
+            <SelectedTask
+              task={selected}
+              form={forms[selected.taskId]}
+              session={session}
+              onChange={(inputKey, value) => setSession((current) => changeInput(current, inputKey, value))}
+              onGenerate={() => void generate(selected.taskId)}
+            />
+          ) : (
+            <p>Select a task to see its support state.</p>
+          )}
         </aside>
       </div>
+      {session.result?.kind === "GENERATED" ? <ProcedureView procedure={session.result.procedure} /> : null}
     </>
   );
+
+  function chooseTask(taskId: string) {
+    setSelectedId(taskId);
+    setSession((current) => selectTask(current, taskId));
+  }
+
+  async function generate(taskId: string) {
+    const values = { ...session.values };
+    const generationId = session.generationId + 1;
+    setSession((current) =>
+      current.generationId === session.generationId
+        ? { ...current, generationId, status: "GENERATING", result: null }
+        : current,
+    );
+    const run = await generateTaskProcedure(taskId, values);
+    setSession((current) => applyRun(current, run, generationId));
+  }
 }
 
 function TaskButton({
@@ -145,11 +186,27 @@ function TaskButton({
   );
 }
 
-function SelectedTask({ task }: { task: DiscoveryTask }) {
+function SelectedTask({
+  task,
+  form,
+  session,
+  onChange,
+  onGenerate,
+}: {
+  task: DiscoveryTask;
+  form: TaskFormView | undefined;
+  session: FormSession;
+  onChange: (inputKey: string, value: string) => void;
+  onGenerate: () => void;
+}) {
   const handoff = selectedTaskHandoff(task);
   const commandOnly = handoff.workflowAvailability === "absent";
+  const validation = session.result?.kind === "VALIDATION" ? session.result.validation : null;
   return (
-    <div data-selection-state={commandOnly ? "WORKFLOW_NOT_ESTABLISHED" : "SELECTED"}>
+    <div
+      data-selection-state={commandOnly ? "WORKFLOW_NOT_ESTABLISHED" : "SELECTED"}
+      data-generation-state={session.status}
+    >
       <h2>Selected task</h2>
       <p className={commandOnly ? "notice command" : "notice workflow"}>{selectionNotice(task)}</p>
       <dl>
@@ -174,16 +231,34 @@ function SelectedTask({ task }: { task: DiscoveryTask }) {
         <dt>Validation</dt>
         <dd>{handoff.validationStatus ?? "Not established"}</dd>
       </dl>
-      {task.aliases.length > 0 ? (
-        <>
-          <h3>Catalog aliases</h3>
-          <ul className="alias-list">
-            {task.aliases.map((alias) => (
-              <li key={alias}>{alias}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      {commandOnly ? null : form?.state === "FORM" ? (
+        <TaskForm
+          taskId={task.taskId}
+          fields={form.fields}
+          values={session.values}
+          validation={validation}
+          busy={session.status === "GENERATING"}
+          onChange={onChange}
+          onGenerate={onGenerate}
+        />
+      ) : (
+        <p className="notice command" role="alert">
+          {form?.errors[0]?.message ?? "The input contract is not available. No procedure form is shown."}
+        </p>
+      )}
+      <p role="status">
+        {session.status === "GENERATING"
+          ? "Generating the procedure from the catalog. This does not contact a device."
+          : validation
+            ? validationMessage(validation)
+            : session.result?.kind === "BLOCKED"
+              ? `${session.result.state}. ${session.result.messages.join(" ")}`
+              : session.result?.kind === "DATA_ERROR"
+                ? `DATA_ERROR. ${session.result.errors.map((error) => error.message).join(" ")}`
+                : session.result?.kind === "GENERATED"
+                  ? "READY. GENERATED. The procedure below uses the submitted values. Device execution is not authorized."
+                  : ""}
+      </p>
     </div>
   );
 }

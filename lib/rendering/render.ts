@@ -82,7 +82,7 @@ function engineerText(value: AcceptedInputValue | undefined): string | null {
   return null;
 }
 
-function isCredentialName(name: string): boolean {
+export function isCredentialName(name: string): boolean {
   return CREDENTIAL_PLACEHOLDERS.has(normalizeTaskInput(name));
 }
 
