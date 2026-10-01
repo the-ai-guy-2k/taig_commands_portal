@@ -1,0 +1,601 @@
+{
+  "metadata": {
+    "aci": "ACI-TAIG2K-CISCO-COMMAND-KNOWLEDGE-RESEARCH-001",
+    "schema_version": "1.0.0",
+    "dataset_version": "0.1.0",
+    "generated_at": "2026-10-01",
+    "status": "PARTIAL",
+    "completeness_claim": false,
+    "coverage_boundary": "Selected task forms, chiefly Catalyst 9300 IOS XE 17.15.x; separately scoped router and legacy IOS references",
+    "command_count": 100,
+    "workflow_count": 12,
+    "taxonomy_feature_group_count": 55,
+    "source_count": 29,
+    "lab_validation": false
+  },
+  "coverage": [
+    {
+      "category_id": "basics",
+      "label": "Device identity, banners and time",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "hostname"
+      ]
+    },
+    {
+      "category_id": "cli",
+      "label": "CLI modes, help, history and filters",
+      "status": "seed_partial",
+      "command_count": 6,
+      "workflow_count": 0,
+      "command_ids": [
+        "enable",
+        "conf",
+        "exit",
+        "end",
+        "history",
+        "filter"
+      ]
+    },
+    {
+      "category_id": "config",
+      "label": "Save, back up and restore configuration",
+      "status": "seed_partial",
+      "command_count": 6,
+      "workflow_count": 1,
+      "command_ids": [
+        "run",
+        "startup",
+        "save",
+        "backup",
+        "restore",
+        "erase"
+      ]
+    },
+    {
+      "category_id": "images",
+      "label": "Software and image management",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "license",
+      "label": "Platform, license and feature identification",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "version"
+      ]
+    },
+    {
+      "category_id": "vlan",
+      "label": "VLANs and access ports",
+      "status": "seed_partial",
+      "command_count": 6,
+      "workflow_count": 1,
+      "command_ids": [
+        "show-switchport",
+        "switchport",
+        "vlan",
+        "show-vlan",
+        "access-mode",
+        "access-vlan"
+      ]
+    },
+    {
+      "category_id": "trunk",
+      "label": "Trunks and DTP",
+      "status": "seed_partial",
+      "command_count": 6,
+      "workflow_count": 1,
+      "command_ids": [
+        "show-trunk",
+        "trunk-mode",
+        "trunk-allowed",
+        "trunk-add",
+        "trunk-native",
+        "dtp-off"
+      ]
+    },
+    {
+      "category_id": "mac",
+      "label": "Locate endpoints and MAC learning",
+      "status": "seed_partial",
+      "command_count": 3,
+      "workflow_count": 1,
+      "command_ids": [
+        "mac-address",
+        "mac-interface",
+        "mac-vlan"
+      ]
+    },
+    {
+      "category_id": "stp",
+      "label": "STP, Rapid PVST and MST",
+      "status": "seed_partial",
+      "command_count": 5,
+      "workflow_count": 0,
+      "command_ids": [
+        "stp-show",
+        "stp-interface",
+        "stp-mode",
+        "bpduguard",
+        "portfast-default"
+      ]
+    },
+    {
+      "category_id": "etherchannel",
+      "label": "LACP, PAgP and static EtherChannel",
+      "status": "seed_partial",
+      "command_count": 6,
+      "workflow_count": 1,
+      "command_ids": [
+        "channel",
+        "channel-protocol",
+        "port-channel",
+        "ether-summary",
+        "ether-detail",
+        "lacp-neighbor"
+      ]
+    },
+    {
+      "category_id": "port-security",
+      "label": "Port security",
+      "status": "seed_partial",
+      "command_count": 3,
+      "workflow_count": 0,
+      "command_ids": [
+        "portsec",
+        "portsec-sticky",
+        "portsec-show"
+      ]
+    },
+    {
+      "category_id": "l2-protection",
+      "label": "DHCP snooping, DAI, IP source guard and storm control",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "interfaces",
+      "label": "Physical ports, routed ports, SVIs, subinterfaces and loopbacks",
+      "status": "seed_partial",
+      "command_count": 7,
+      "workflow_count": 0,
+      "command_ids": [
+        "interface",
+        "ip-address",
+        "enable-interface",
+        "show-ip-brief",
+        "show-ip-if",
+        "show-status",
+        "no-switchport"
+      ]
+    },
+    {
+      "category_id": "ipv4",
+      "label": "IPv4, ARP and reachability",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "arp"
+      ]
+    },
+    {
+      "category_id": "ipv6",
+      "label": "IPv6, ND and reachability",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "static",
+      "label": "Static and default routes",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "static-route"
+      ]
+    },
+    {
+      "category_id": "rib-cef",
+      "label": "Routing table, CEF and forwarding adjacency",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "route"
+      ]
+    },
+    {
+      "category_id": "vrf",
+      "label": "VRFs and routing context",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "route-vrf"
+      ]
+    },
+    {
+      "category_id": "fhrp",
+      "label": "HSRP, VRRP and GLBP",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "ospf",
+      "label": "OSPFv2 and OSPFv3",
+      "status": "seed_partial",
+      "command_count": 10,
+      "workflow_count": 2,
+      "command_ids": [
+        "route-ospf",
+        "ospf-process",
+        "ospf-interface",
+        "ospf-hello",
+        "ospf-dead",
+        "ospf-cost",
+        "ospf-neighbor",
+        "ospf-neighbor-detail",
+        "ospf-show-if",
+        "ospf-db"
+      ]
+    },
+    {
+      "category_id": "eigrp",
+      "label": "EIGRP classic and named modes",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "isis",
+      "label": "IS-IS",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "rip",
+      "label": "RIP and legacy migration",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "bgp-feature",
+      "label": "BGP neighbors, address families and route policy",
+      "status": "seed_partial",
+      "command_count": 6,
+      "workflow_count": 1,
+      "command_ids": [
+        "bgp-process",
+        "bgp-peer",
+        "bgp-summary",
+        "bgp-neighbor",
+        "bgp-table",
+        "bgp-advertised"
+      ]
+    },
+    {
+      "category_id": "dhcp",
+      "label": "DHCP server, relay, client and lease diagnosis",
+      "status": "seed_partial",
+      "command_count": 8,
+      "workflow_count": 1,
+      "command_ids": [
+        "dhcp-exclude",
+        "dhcp-pool",
+        "dhcp-network",
+        "dhcp-router",
+        "dhcp-dns",
+        "dhcp-bindings",
+        "dhcp-show-pool",
+        "dhcp-conflict"
+      ]
+    },
+    {
+      "category_id": "dns",
+      "label": "DNS client and hostname resolution",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "ntp",
+      "label": "NTP and time synchronization",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "nat",
+      "label": "NAT and PAT",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "nat-show"
+      ]
+    },
+    {
+      "category_id": "acl",
+      "label": "Standard, extended, named and IPv6 ACLs",
+      "status": "seed_partial",
+      "command_count": 6,
+      "workflow_count": 1,
+      "command_ids": [
+        "acl-ext",
+        "acl-std",
+        "acl-permit-tcp",
+        "acl-deny-ip",
+        "acl-apply",
+        "acl-show"
+      ]
+    },
+    {
+      "category_id": "ssh",
+      "label": "SSH and remote management",
+      "status": "seed_partial",
+      "command_count": 7,
+      "workflow_count": 1,
+      "command_ids": [
+        "domain",
+        "rsa",
+        "ssh-version",
+        "ssh-show",
+        "ssh-sessions",
+        "line-vty",
+        "ssh-transport"
+      ]
+    },
+    {
+      "category_id": "aaa",
+      "label": "Local AAA, RADIUS and TACACS+",
+      "status": "seed_partial",
+      "command_count": 2,
+      "workflow_count": 0,
+      "command_ids": [
+        "local-login",
+        "local-user"
+      ]
+    },
+    {
+      "category_id": "hardening",
+      "label": "Device and service hardening",
+      "status": "seed_partial",
+      "command_count": 1,
+      "workflow_count": 0,
+      "command_ids": [
+        "ports-show"
+      ]
+    },
+    {
+      "category_id": "copp",
+      "label": "Control-plane and management-plane protection",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "vpn",
+      "label": "IOS IPsec, IKE and VPN dependencies",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "macsec",
+      "label": "MACsec, TrustSec and identity services",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "snmp",
+      "label": "SNMP",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "syslog",
+      "label": "Syslog and logging",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "discovery",
+      "label": "CDP and LLDP",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "span",
+      "label": "SPAN, RSPAN, ERSPAN and packet capture",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "sla",
+      "label": "IP SLA and object tracking",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "netflow",
+      "label": "NetFlow and flow telemetry",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "qos-feature",
+      "label": "Classification, marking, policing, shaping and queuing",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "multicast",
+      "label": "IGMP, PIM and multicast routing",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "gre",
+      "label": "GRE, tunnels and encapsulation",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "mpls",
+      "label": "MPLS and VPN routing",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "ha",
+      "label": "Stacking, redundancy and high availability",
+      "status": "seed_partial",
+      "command_count": 3,
+      "workflow_count": 0,
+      "command_ids": [
+        "reload",
+        "show-switch",
+        "show-redundancy"
+      ]
+    },
+    {
+      "category_id": "automation",
+      "label": "NETCONF, RESTCONF, YANG, gNMI and EEM",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "sda",
+      "label": "SD-Access, VXLAN and LISP",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "poe",
+      "label": "PoE, optics and hardware resources",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "tr-interface",
+      "label": "Interface errors, drops and MTU",
+      "status": "seed_partial",
+      "command_count": 2,
+      "workflow_count": 1,
+      "command_ids": [
+        "show-if",
+        "show-errors"
+      ]
+    },
+    {
+      "category_id": "tr-switching",
+      "label": "Switching loops, VLAN and trunk failures",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "tr-routing",
+      "label": "Routing and neighbor failures",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "tr-connectivity",
+      "label": "End-to-end connectivity and path failures",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "tr-performance",
+      "label": "CPU, memory, queues and throughput",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    },
+    {
+      "category_id": "tr-system",
+      "label": "Boot, crash, hardware and system failures",
+      "status": "backlog",
+      "command_count": 0,
+      "workflow_count": 0,
+      "command_ids": []
+    }
+  ],
+  "next_partition": {
+    "priority": 1,
+    "name": "Core CLI and Layer 2 completion for Catalyst 9300 IOS XE 17.15.x",
+    "acceptance_criteria": [
+      "Inventory every command heading from the selected reference chapters.",
+      "Reconcile extracted/included/deferred counts against that inventory.",
+      "Verify parameters, no/default forms and mode for each selected task.",
+      "Qualify workflows and negative cases in a nonproduction matching-release lab."
+    ]
+  },
+  "unresolved": [
+    "Complete reference inventory and denominator not established.",
+    "Exact release/platform/licensing support for unpinned router guides.",
+    "Current IOS XE DHCP mapping; legacy IOS records must stay separate.",
+    "AAA method-list interaction and full VTY range on a selected target.",
+    "MST reference mode prose and terminal transport-default prose have apparent inconsistencies.",
+    "No device testing; syntax examples are documentation-derived."
+  ]
+}

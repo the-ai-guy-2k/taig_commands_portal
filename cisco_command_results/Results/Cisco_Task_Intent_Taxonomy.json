@@ -1,0 +1,994 @@
+{
+  "metadata": {
+    "aci": "ACI-TAIG2K-CISCO-COMMAND-KNOWLEDGE-RESEARCH-001",
+    "schema_version": "1.0.0",
+    "dataset_version": "0.1.0",
+    "generated_at": "2026-10-01",
+    "status": "PARTIAL",
+    "completeness_claim": false,
+    "coverage_boundary": "Selected task forms, chiefly Catalyst 9300 IOS XE 17.15.x; separately scoped router and legacy IOS references",
+    "command_count": 100,
+    "workflow_count": 12,
+    "taxonomy_feature_group_count": 55,
+    "source_count": 29,
+    "lab_validation": false
+  },
+  "task_categories": [
+    {
+      "category_id": "core",
+      "parent_id": null,
+      "label": "Operate and inspect a device",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "basics",
+      "parent_id": "core",
+      "label": "Device identity, banners and time",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "cli",
+      "parent_id": "core",
+      "label": "CLI modes, help, history and filters",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "config",
+      "parent_id": "core",
+      "label": "Save, back up and restore configuration",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "images",
+      "parent_id": "core",
+      "label": "Software and image management",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "license",
+      "parent_id": "core",
+      "label": "Platform, license and feature identification",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "layer2",
+      "parent_id": null,
+      "label": "Connect and protect switch ports",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "vlan",
+      "parent_id": "layer2",
+      "label": "VLANs and access ports",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "trunk",
+      "parent_id": "layer2",
+      "label": "Trunks and DTP",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "mac",
+      "parent_id": "layer2",
+      "label": "Locate endpoints and MAC learning",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "stp",
+      "parent_id": "layer2",
+      "label": "STP, Rapid PVST and MST",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "etherchannel",
+      "parent_id": "layer2",
+      "label": "LACP, PAgP and static EtherChannel",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "port-security",
+      "parent_id": "layer2",
+      "label": "Port security",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "l2-protection",
+      "parent_id": "layer2",
+      "label": "DHCP snooping, DAI, IP source guard and storm control",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "ip",
+      "parent_id": null,
+      "label": "Address interfaces and forward packets",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "interfaces",
+      "parent_id": "ip",
+      "label": "Physical ports, routed ports, SVIs, subinterfaces and loopbacks",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "ipv4",
+      "parent_id": "ip",
+      "label": "IPv4, ARP and reachability",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "ipv6",
+      "parent_id": "ip",
+      "label": "IPv6, ND and reachability",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "static",
+      "parent_id": "ip",
+      "label": "Static and default routes",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "rib-cef",
+      "parent_id": "ip",
+      "label": "Routing table, CEF and forwarding adjacency",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "vrf",
+      "parent_id": "ip",
+      "label": "VRFs and routing context",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "fhrp",
+      "parent_id": "ip",
+      "label": "HSRP, VRRP and GLBP",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "igp",
+      "parent_id": null,
+      "label": "Establish interior routing",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "ospf",
+      "parent_id": "igp",
+      "label": "OSPFv2 and OSPFv3",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "eigrp",
+      "parent_id": "igp",
+      "label": "EIGRP classic and named modes",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "isis",
+      "parent_id": "igp",
+      "label": "IS-IS",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "rip",
+      "parent_id": "igp",
+      "label": "RIP and legacy migration",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "bgp",
+      "parent_id": null,
+      "label": "Establish and control BGP routing",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "bgp-feature",
+      "parent_id": "bgp",
+      "label": "BGP neighbors, address families and route policy",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "services",
+      "parent_id": null,
+      "label": "Provide network services",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "dhcp",
+      "parent_id": "services",
+      "label": "DHCP server, relay, client and lease diagnosis",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "dns",
+      "parent_id": "services",
+      "label": "DNS client and hostname resolution",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "ntp",
+      "parent_id": "services",
+      "label": "NTP and time synchronization",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "nat",
+      "parent_id": "services",
+      "label": "NAT and PAT",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "security",
+      "parent_id": null,
+      "label": "Control access and harden the device",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "acl",
+      "parent_id": "security",
+      "label": "Standard, extended, named and IPv6 ACLs",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "ssh",
+      "parent_id": "security",
+      "label": "SSH and remote management",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "aaa",
+      "parent_id": "security",
+      "label": "Local AAA, RADIUS and TACACS+",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "hardening",
+      "parent_id": "security",
+      "label": "Device and service hardening",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "copp",
+      "parent_id": "security",
+      "label": "Control-plane and management-plane protection",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "vpn",
+      "parent_id": "security",
+      "label": "IOS IPsec, IKE and VPN dependencies",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "macsec",
+      "parent_id": "security",
+      "label": "MACsec, TrustSec and identity services",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "monitoring",
+      "parent_id": null,
+      "label": "Observe traffic and device health",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "snmp",
+      "parent_id": "monitoring",
+      "label": "SNMP",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "syslog",
+      "parent_id": "monitoring",
+      "label": "Syslog and logging",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "discovery",
+      "parent_id": "monitoring",
+      "label": "CDP and LLDP",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "span",
+      "parent_id": "monitoring",
+      "label": "SPAN, RSPAN, ERSPAN and packet capture",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "sla",
+      "parent_id": "monitoring",
+      "label": "IP SLA and object tracking",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "netflow",
+      "parent_id": "monitoring",
+      "label": "NetFlow and flow telemetry",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "qos",
+      "parent_id": null,
+      "label": "Control congestion and service quality",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "qos-feature",
+      "parent_id": "qos",
+      "label": "Classification, marking, policing, shaping and queuing",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "advanced",
+      "parent_id": null,
+      "label": "Operate advanced features",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "multicast",
+      "parent_id": "advanced",
+      "label": "IGMP, PIM and multicast routing",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "gre",
+      "parent_id": "advanced",
+      "label": "GRE, tunnels and encapsulation",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "mpls",
+      "parent_id": "advanced",
+      "label": "MPLS and VPN routing",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "ha",
+      "parent_id": "advanced",
+      "label": "Stacking, redundancy and high availability",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "automation",
+      "parent_id": "advanced",
+      "label": "NETCONF, RESTCONF, YANG, gNMI and EEM",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "sda",
+      "parent_id": "advanced",
+      "label": "SD-Access, VXLAN and LISP",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "poe",
+      "parent_id": "advanced",
+      "label": "PoE, optics and hardware resources",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "troubleshooting",
+      "parent_id": null,
+      "label": "Diagnose a symptom",
+      "type": "task_partition",
+      "coverage_status": "design_only"
+    },
+    {
+      "category_id": "tr-interface",
+      "parent_id": "troubleshooting",
+      "label": "Interface errors, drops and MTU",
+      "type": "feature_task_group",
+      "coverage_status": "seed_partial"
+    },
+    {
+      "category_id": "tr-switching",
+      "parent_id": "troubleshooting",
+      "label": "Switching loops, VLAN and trunk failures",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "tr-routing",
+      "parent_id": "troubleshooting",
+      "label": "Routing and neighbor failures",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "tr-connectivity",
+      "parent_id": "troubleshooting",
+      "label": "End-to-end connectivity and path failures",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "tr-performance",
+      "parent_id": "troubleshooting",
+      "label": "CPU, memory, queues and throughput",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    },
+    {
+      "category_id": "tr-system",
+      "parent_id": "troubleshooting",
+      "label": "Boot, crash, hardware and system failures",
+      "type": "feature_task_group",
+      "coverage_status": "backlog"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "task-access-vlan20",
+      "title": "Configure an access port in VLAN 20",
+      "category_id": "vlan",
+      "aliases": [
+        "make Gi1/0/10 an access port in VLAN 20",
+        "put a PC port in VLAN 20"
+      ],
+      "workflow_ids": [
+        "access-vlan20"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-add-trunk-vlan",
+      "title": "Add VLAN 20 to a trunk",
+      "category_id": "trunk",
+      "aliases": [
+        "allow vlan 20 on an existing uplink"
+      ],
+      "workflow_ids": [
+        "add-trunk-vlan"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-locate-mac",
+      "title": "Locate an endpoint MAC address",
+      "category_id": "mac",
+      "aliases": [
+        "which switch port is a MAC on",
+        "what is connected to this port"
+      ],
+      "workflow_ids": [
+        "locate-mac"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-interface-drops",
+      "title": "Investigate interface errors and drops",
+      "category_id": "tr-interface",
+      "aliases": [
+        "why is Gi1/0/10 dropping packets",
+        "find increasing CRC errors"
+      ],
+      "workflow_ids": [
+        "interface-drops"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-ospf-link",
+      "title": "Enable OSPFv2 on a routed link",
+      "category_id": "ospf",
+      "aliases": [
+        "configure OSPF between two routers"
+      ],
+      "workflow_ids": [
+        "ospf-link"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-ospf-adjacency",
+      "title": "Diagnose OSPF adjacency failure",
+      "category_id": "ospf",
+      "aliases": [
+        "OSPF neighbors will not become adjacent",
+        "OSPF stuck in EXSTART"
+      ],
+      "workflow_ids": [
+        "ospf-adjacency"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-bgp-status",
+      "title": "Verify an IPv4 BGP peer",
+      "category_id": "bgp-feature",
+      "aliases": [
+        "check BGP neighbor status",
+        "why is BGP not established"
+      ],
+      "workflow_ids": [
+        "bgp-status"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-extended-acl",
+      "title": "Create a named extended IPv4 ACL",
+      "category_id": "acl",
+      "aliases": [
+        "create an extended ACL for HTTPS"
+      ],
+      "workflow_ids": [
+        "extended-acl"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-ssh-only",
+      "title": "Prepare SSH-only remote management",
+      "category_id": "ssh",
+      "aliases": [
+        "configure SSH and disable Telnet"
+      ],
+      "workflow_ids": [
+        "ssh-only"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-dhcp-server",
+      "title": "Configure and inspect a legacy IOS DHCP pool",
+      "category_id": "dhcp",
+      "aliases": [
+        "configure DHCP server",
+        "why are clients not getting addresses"
+      ],
+      "workflow_ids": [
+        "dhcp-server"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-save-backup",
+      "title": "Back up and save validated configuration",
+      "category_id": "config",
+      "aliases": [
+        "save my changes",
+        "backup running configuration"
+      ],
+      "workflow_ids": [
+        "save-backup"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-lacp-check",
+      "title": "Verify an existing LACP EtherChannel",
+      "category_id": "etherchannel",
+      "aliases": [
+        "why is a LACP port suspended",
+        "check port channel members"
+      ],
+      "workflow_ids": [
+        "lacp-check"
+      ],
+      "coverage_status": "seed_partial"
+    },
+    {
+      "task_id": "task-command-enable",
+      "title": "Enter privileged EXEC",
+      "category_id": "cli",
+      "aliases": [
+        "enter privileged exec"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-history",
+      "title": "Adjust session command history capacity",
+      "category_id": "cli",
+      "aliases": [
+        "adjust session command history capacity"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-filter",
+      "title": "Filter configuration output by matching lines",
+      "category_id": "cli",
+      "aliases": [
+        "filter configuration output by matching lines"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-restore",
+      "title": "Load configuration into the running state",
+      "category_id": "config",
+      "aliases": [
+        "load configuration into the running state"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-erase",
+      "title": "Erase saved startup configuration",
+      "category_id": "config",
+      "aliases": [
+        "erase saved startup configuration"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-reload",
+      "title": "Restart the device",
+      "category_id": "ha",
+      "aliases": [
+        "restart the device"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-show-switch",
+      "title": "Inspect stack members and roles",
+      "category_id": "ha",
+      "aliases": [
+        "inspect stack members and roles"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-show-redundancy",
+      "title": "Inspect redundancy state",
+      "category_id": "ha",
+      "aliases": [
+        "inspect redundancy state"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-ip-address",
+      "title": "Assign a primary IPv4 address",
+      "category_id": "interfaces",
+      "aliases": [
+        "assign a primary ipv4 address"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-enable-interface",
+      "title": "Administratively enable an interface",
+      "category_id": "interfaces",
+      "aliases": [
+        "administratively enable an interface"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-switchport",
+      "title": "Convert a supported routed port to Layer 2",
+      "category_id": "vlan",
+      "aliases": [
+        "convert a supported routed port to layer 2"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-no-switchport",
+      "title": "Convert a supported switchport to Layer 3",
+      "category_id": "interfaces",
+      "aliases": [
+        "convert a supported switchport to layer 3"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-trunk-mode",
+      "title": "Set static trunk mode",
+      "category_id": "trunk",
+      "aliases": [
+        "set static trunk mode"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-trunk-allowed",
+      "title": "Set the complete allowed VLAN list",
+      "category_id": "trunk",
+      "aliases": [
+        "set the complete allowed vlan list"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-trunk-native",
+      "title": "Set the trunk native VLAN",
+      "category_id": "trunk",
+      "aliases": [
+        "set the trunk native vlan"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-dtp-off",
+      "title": "Disable DTP negotiation frames",
+      "category_id": "trunk",
+      "aliases": [
+        "disable dtp negotiation frames"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-stp-mode",
+      "title": "Select Rapid PVST operation",
+      "category_id": "stp",
+      "aliases": [
+        "select rapid pvst operation"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-bpduguard",
+      "title": "Enable interface BPDU Guard",
+      "category_id": "stp",
+      "aliases": [
+        "enable interface bpdu guard"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-portfast-default",
+      "title": "Set global PortFast edge BPDU Guard policy",
+      "category_id": "stp",
+      "aliases": [
+        "set global portfast edge bpdu guard policy"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-channel",
+      "title": "Assign a port to an active LACP group",
+      "category_id": "etherchannel",
+      "aliases": [
+        "assign a port to an active lacp group"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-channel-protocol",
+      "title": "Restrict aggregation negotiation to LACP",
+      "category_id": "etherchannel",
+      "aliases": [
+        "restrict aggregation negotiation to lacp"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-port-channel",
+      "title": "Select a logical port-channel",
+      "category_id": "etherchannel",
+      "aliases": [
+        "select a logical port-channel"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-arp",
+      "title": "Inspect IPv4 neighbor resolution",
+      "category_id": "ipv4",
+      "aliases": [
+        "inspect ipv4 neighbor resolution"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-route-vrf",
+      "title": "Inspect a specific VRF routing table",
+      "category_id": "vrf",
+      "aliases": [
+        "inspect a specific vrf routing table"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-static-route",
+      "title": "Configure an IPv4 next-hop static route",
+      "category_id": "static",
+      "aliases": [
+        "configure an ipv4 next-hop static route"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-ospf-hello",
+      "title": "Set the OSPF hello interval",
+      "category_id": "ospf",
+      "aliases": [
+        "set the ospf hello interval"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-ospf-dead",
+      "title": "Set the OSPF dead interval",
+      "category_id": "ospf",
+      "aliases": [
+        "set the ospf dead interval"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-ospf-cost",
+      "title": "Set an explicit OSPF interface cost",
+      "category_id": "ospf",
+      "aliases": [
+        "set an explicit ospf interface cost"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-bgp-process",
+      "title": "Create or select a BGP routing process",
+      "category_id": "bgp-feature",
+      "aliases": [
+        "create or select a bgp routing process"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-bgp-peer",
+      "title": "Define the remote autonomous system for a peer",
+      "category_id": "bgp-feature",
+      "aliases": [
+        "define the remote autonomous system for a peer"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-acl-std",
+      "title": "Create or select a named standard ACL",
+      "category_id": "acl",
+      "aliases": [
+        "create or select a named standard acl"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-local-user",
+      "title": "Create a local account with a supplied secret",
+      "category_id": "aaa",
+      "aliases": [
+        "create a local account with a supplied secret"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-portsec",
+      "title": "Enable switchport port security",
+      "category_id": "port-security",
+      "aliases": [
+        "enable switchport port security"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-portsec-sticky",
+      "title": "Enable sticky secure MAC learning",
+      "category_id": "port-security",
+      "aliases": [
+        "enable sticky secure mac learning"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-portsec-show",
+      "title": "Inspect a port security policy and violations",
+      "category_id": "port-security",
+      "aliases": [
+        "inspect a port security policy and violations"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    },
+    {
+      "task_id": "task-command-nat-show",
+      "title": "Inspect active translation entries",
+      "category_id": "nat",
+      "aliases": [
+        "inspect active translation entries"
+      ],
+      "workflow_ids": [],
+      "coverage_status": "command_only"
+    }
+  ]
+}

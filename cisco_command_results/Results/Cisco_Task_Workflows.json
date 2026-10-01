@@ -1,0 +1,2138 @@
+{
+  "metadata": {
+    "aci": "ACI-TAIG2K-CISCO-COMMAND-KNOWLEDGE-RESEARCH-001",
+    "schema_version": "1.0.0",
+    "dataset_version": "0.1.0",
+    "generated_at": "2026-10-01",
+    "status": "PARTIAL",
+    "completeness_claim": false,
+    "coverage_boundary": "Selected task forms, chiefly Catalyst 9300 IOS XE 17.15.x; separately scoped router and legacy IOS references",
+    "command_count": 100,
+    "workflow_count": 12,
+    "taxonomy_feature_group_count": 55,
+    "source_count": 29,
+    "lab_validation": false
+  },
+  "task_workflows": [
+    {
+      "workflow_id": "access-vlan20",
+      "task_id": "task-access-vlan20",
+      "title": "Configure an access port in VLAN 20",
+      "task_category_id": "vlan",
+      "intent_aliases": [
+        "make Gi1/0/10 an access port in VLAN 20",
+        "put a PC port in VLAN 20"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Port is an endpoint port, not an uplink or channel member.",
+        "Capture existing interface/VLAN settings and upstream VLAN reachability."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-switchport",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          },
+          {
+            "command_id": "show-vlan",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [
+          {
+            "command_id": "conf",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "vlan",
+            "parameter_values": {
+              "vlan_id": 20
+            },
+            "note": null
+          },
+          {
+            "command_id": "exit",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "interface",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          },
+          {
+            "command_id": "access-mode",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "access-vlan",
+            "parameter_values": {
+              "vlan_id": 20
+            },
+            "note": null
+          },
+          {
+            "command_id": "end",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "verification": [
+          {
+            "command_id": "show-switchport",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          },
+          {
+            "command_id": "show-vlan",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "show-status",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-errors",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          },
+          {
+            "command_id": "stp-interface",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Operational access mode and VLAN 20; expected link and STP forwarding."
+      ],
+      "decision_branches": [],
+      "rollback": {
+        "strategy": "restore_prior_values",
+        "instructions": [
+          "Restore captured access VLAN and mode.",
+          "Delete VLAN 20 only if newly created and unused elsewhere; default interface is not a routine rollback."
+        ]
+      },
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S08",
+        "S09"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "add-trunk-vlan",
+      "task_id": "task-add-trunk-vlan",
+      "title": "Add VLAN 20 to a trunk",
+      "task_category_id": "trunk",
+      "intent_aliases": [
+        "allow vlan 20 on an existing uplink"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Link already operates as a trunk; coordinate peer and VLAN existence."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-trunk",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-vlan",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [
+          {
+            "command_id": "conf",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "interface",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "trunk-add",
+            "parameter_values": {
+              "vlan_list": "20"
+            },
+            "note": null
+          },
+          {
+            "command_id": "end",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "verification": [
+          {
+            "command_id": "show-trunk",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-switchport",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "stp-show",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "mac-vlan",
+            "parameter_values": {
+              "vlan_id": 20
+            },
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "VLAN 20 allowed, active and forwarding where intended."
+      ],
+      "decision_branches": [],
+      "rollback": {
+        "strategy": "remove_only_new_addition",
+        "instructions": [
+          "Remove VLAN 20 from the allowed list only if absent before this change.",
+          "Restore any separately changed native VLAN/mode from captured state."
+        ]
+      },
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "locate-mac",
+      "task_id": "task-locate-mac",
+      "title": "Locate an endpoint MAC address",
+      "task_category_id": "mac",
+      "intent_aliases": [
+        "which switch port is a MAC on",
+        "what is connected to this port"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Correct VLAN/context; endpoint has recently sent traffic."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "version",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [],
+        "verification": [
+          {
+            "command_id": "mac-address",
+            "parameter_values": {
+              "mac": "0011.2233.4455"
+            },
+            "note": null
+          },
+          {
+            "command_id": "mac-interface",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          },
+          {
+            "command_id": "show-status",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "mac-vlan",
+            "parameter_values": {
+              "vlan_id": 20
+            },
+            "note": null
+          },
+          {
+            "command_id": "show-trunk",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "stp-show",
+            "parameter_values": {},
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Learned port and VLAN located; an uplink can require repeating lookup on the next switch."
+      ],
+      "decision_branches": [
+        {
+          "condition": "No entry",
+          "action": "Check VLAN, recent endpoint traffic, aging and port security; do not invent a location."
+        },
+        {
+          "condition": "Entry points to an uplink",
+          "action": "Follow the topology and repeat on the downstream switch; table alone does not identify a human/device owner."
+        }
+      ],
+      "rollback": {
+        "strategy": "none_read_only",
+        "instructions": []
+      },
+      "source_ids": [
+        "S02",
+        "S04",
+        "S07"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "interface-drops",
+      "task_id": "task-interface-drops",
+      "title": "Investigate interface errors and drops",
+      "task_category_id": "tr-interface",
+      "intent_aliases": [
+        "why is Gi1/0/10 dropping packets",
+        "find increasing CRC errors"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Capture time interval and offered traffic; hardware queue/FED counters may require the next research partition."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "version",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [],
+        "verification": [
+          {
+            "command_id": "show-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          },
+          {
+            "command_id": "show-errors",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "show-status",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-ip-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          },
+          {
+            "command_id": "show-switchport",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/10"
+            },
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Compare two timestamped samples; classify error growth versus congestion/drop symptoms."
+      ],
+      "decision_branches": [
+        {
+          "condition": "Counters are historical and stable",
+          "action": "Do not diagnose an ongoing fault from the total alone."
+        },
+        {
+          "condition": "Drops increase with traffic",
+          "action": "Collect platform queue/policer evidence before asserting a physical fault."
+        }
+      ],
+      "rollback": {
+        "strategy": "none_read_only",
+        "instructions": [
+          "No automatic counter clearing, port bounce or duplex/MTU changes."
+        ]
+      },
+      "source_ids": [
+        "S04",
+        "S07",
+        "S08"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "ospf-link",
+      "task_id": "task-ospf-link",
+      "title": "Enable OSPFv2 on a routed link",
+      "task_category_id": "ospf",
+      "intent_aliases": [
+        "configure OSPF between two routers"
+      ],
+      "platform_boundary": "IOS XE 17.x router configuration guide plus Catalyst 9300 17.15.x verification evidence; exact router hardware must be qualified",
+      "prerequisites": [
+        "IP addressing and routing already working.",
+        "Unique router IDs, area, timers, authentication, MTU and network type checked at both ends.",
+        "Configure both endpoints separately; process IDs are locally significant."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-ip-brief",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "route",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [
+          {
+            "command_id": "conf",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "ospf-process",
+            "parameter_values": {
+              "process_id": 10
+            },
+            "note": null
+          },
+          {
+            "command_id": "exit",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "interface",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "ospf-interface",
+            "parameter_values": {
+              "process_id": 10,
+              "area_id": 0
+            },
+            "note": null
+          },
+          {
+            "command_id": "end",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "verification": [
+          {
+            "command_id": "ospf-neighbor",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "ospf-show-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "route-ospf",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "ospf-neighbor-detail",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "ospf-db",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-ip-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Expected adjacency and approved OSPF routes."
+      ],
+      "decision_branches": [],
+      "rollback": {
+        "strategy": "restore_prior_values",
+        "instructions": [
+          "Remove only the newly added interface OSPF attachment; restore prior settings.",
+          "Remove process 10 only if newly created and unused by other interfaces."
+        ]
+      },
+      "source_ids": [
+        "S01",
+        "S04",
+        "S05",
+        "S08",
+        "S09",
+        "S10",
+        "S14"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "ospf-adjacency",
+      "task_id": "task-ospf-adjacency",
+      "title": "Diagnose OSPF adjacency failure",
+      "task_category_id": "ospf",
+      "intent_aliases": [
+        "OSPF neighbors will not become adjacent",
+        "OSPF stuck in EXSTART"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Collect both peers and intended network topology."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "show-ip-brief",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [],
+        "verification": [
+          {
+            "command_id": "ospf-neighbor",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "ospf-show-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "ospf-neighbor-detail",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "show-ip-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "ospf-db",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "route-ospf",
+            "parameter_values": {},
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Identify state-specific evidence before changing timers, authentication or MTU."
+      ],
+      "decision_branches": [
+        {
+          "condition": "No neighbor",
+          "action": "Check link/IP, OSPF interface attachment, passive policy, area, authentication and packet reachability."
+        },
+        {
+          "condition": "2-WAY between DROTHERs on broadcast media",
+          "action": "Can be normal; compare DR/BDR roles and intended topology."
+        },
+        {
+          "condition": "EXSTART/EXCHANGE persists",
+          "action": "Compare MTU and DBD exchange; mismatch is common but not the only cause."
+        },
+        {
+          "condition": "FULL but route absent",
+          "action": "Inspect LSDB and RIB selection; adjacency alone does not establish end-to-end routing."
+        }
+      ],
+      "rollback": {
+        "strategy": "none_read_only",
+        "instructions": [
+          "No automatic clear process, debug, or mtu-ignore workaround."
+        ]
+      },
+      "source_ids": [
+        "S04",
+        "S05",
+        "S08",
+        "S10",
+        "S14",
+        "S22",
+        "S23"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "bgp-status",
+      "task_id": "task-bgp-status",
+      "title": "Verify an IPv4 BGP peer",
+      "task_category_id": "bgp-feature",
+      "intent_aliases": [
+        "check BGP neighbor status",
+        "why is BGP not established"
+      ],
+      "platform_boundary": "IOS XE 17.x routing guide; base IPv4 unicast form only, not all BGP address families",
+      "prerequisites": [
+        "Peer address and address family known; check correct VRF separately."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "route",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [],
+        "verification": [
+          {
+            "command_id": "bgp-summary",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "bgp-neighbor",
+            "parameter_values": {
+              "peer": "192.0.2.2"
+            },
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "bgp-table",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "bgp-advertised",
+            "parameter_values": {
+              "peer": "192.0.2.2"
+            },
+            "note": null
+          },
+          {
+            "command_id": "route",
+            "parameter_values": {},
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Expected session state, capabilities and received/advertised prefixes."
+      ],
+      "decision_branches": [
+        {
+          "condition": "State/PfxRcd is numeric",
+          "action": "Session is established; zero prefixes still requires policy/address-family investigation."
+        },
+        {
+          "condition": "Idle/Active/Connect persists",
+          "action": "Review peer reachability, TCP 179 filtering, AS numbers, source, authentication and TTL policy."
+        },
+        {
+          "condition": "Best BGP path missing from RIB",
+          "action": "Review next-hop resolution and competing route selection."
+        }
+      ],
+      "rollback": {
+        "strategy": "none_read_only",
+        "instructions": [
+          "Do not hard-reset BGP as a first diagnostic."
+        ]
+      },
+      "source_ids": [
+        "S05",
+        "S08",
+        "S11",
+        "S12",
+        "S14"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "extended-acl",
+      "task_id": "task-extended-acl",
+      "title": "Create a named extended IPv4 ACL",
+      "task_category_id": "acl",
+      "intent_aliases": [
+        "create an extended ACL for HTTPS"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Illustrative lab policy only; define all required flows including management and routing first.",
+        "No existing ACL/interface binding is overwritten without a captured recovery plan."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-ip-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "acl-show",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [
+          {
+            "command_id": "conf",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "acl-ext",
+            "parameter_values": {
+              "acl_name": "APP_IN"
+            },
+            "note": null
+          },
+          {
+            "command_id": "acl-permit-tcp",
+            "parameter_values": {
+              "address": "198.51.100.10",
+              "port": 443
+            },
+            "note": null
+          },
+          {
+            "command_id": "acl-deny-ip",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "exit",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "interface",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "acl-apply",
+            "parameter_values": {
+              "acl_name": "APP_IN"
+            },
+            "note": null
+          },
+          {
+            "command_id": "end",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "verification": [
+          {
+            "command_id": "acl-show",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-ip-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "route",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-if",
+            "parameter_values": {
+              "interface": "GigabitEthernet1/0/1"
+            },
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Intended permitted traffic passes and denied traffic fails using controlled tests."
+      ],
+      "decision_branches": [],
+      "rollback": {
+        "strategy": "restore_binding_and_entries",
+        "instructions": [
+          "Restore the prior interface ACL binding or remove only the new binding.",
+          "Restore edited entries; delete APP_IN only if newly created and unreferenced."
+        ]
+      },
+      "source_ids": [
+        "S01",
+        "S04",
+        "S06",
+        "S08",
+        "S09",
+        "S14",
+        "S15"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "ssh-only",
+      "task_id": "task-ssh-only",
+      "title": "Prepare SSH-only remote management",
+      "task_category_id": "ssh",
+      "intent_aliases": [
+        "configure SSH and disable Telnet"
+      ],
+      "platform_boundary": "Composite research workflow: Catalyst 9300 17.15 SSH plus separately scoped IOS/IOS XE VTY evidence; target integration untested",
+      "prerequisites": [
+        "Console or independent recovery access.",
+        "Authentication/authorization already configured and tested; local-user record is optional setup, not a mandate.",
+        "Correct management VRF, route, filtering and approved crypto policy.",
+        "Composite workflow requires target qualification: VTY source is separately labeled, not assumed universal Catalyst evidence."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "version",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "ssh-show",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-ip-brief",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [
+          {
+            "command_id": "conf",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "hostname",
+            "parameter_values": {
+              "hostname": "SW1"
+            },
+            "note": "Only if required and approved."
+          },
+          {
+            "command_id": "domain",
+            "parameter_values": {
+              "domain": "example.net"
+            },
+            "note": "Only if absent and required."
+          },
+          {
+            "command_id": "rsa",
+            "parameter_values": {},
+            "note": "Only if a suitable key is absent; respond interactively using release-approved strength."
+          },
+          {
+            "command_id": "ssh-version",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "line-vty",
+            "parameter_values": {
+              "first": 0,
+              "last": 4
+            },
+            "note": "Example range only: repeat for every discovered VTY range."
+          },
+          {
+            "command_id": "local-login",
+            "parameter_values": {},
+            "note": "Only on an intentionally local-authentication baseline; preserve existing AAA."
+          },
+          {
+            "command_id": "ssh-transport",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "end",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "verification": [
+          {
+            "command_id": "ssh-show",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "ssh-sessions",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "ports-show",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-ip-brief",
+            "parameter_values": {},
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "New external SSH login succeeds at intended privilege; Telnet is rejected on all VTY ranges."
+      ],
+      "decision_branches": [],
+      "rollback": {
+        "strategy": "restore_captured_management_policy",
+        "instructions": [
+          "Use console/recovery path if locked out.",
+          "Restore prior AAA and VTY policy; do not zeroize established keys as generic rollback."
+        ]
+      },
+      "source_ids": [
+        "S01",
+        "S04",
+        "S07",
+        "S08",
+        "S16",
+        "S17",
+        "S18",
+        "S26",
+        "S29"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "dhcp-server",
+      "task_id": "task-dhcp-server",
+      "title": "Configure and inspect a legacy IOS DHCP pool",
+      "task_category_id": "dhcp",
+      "intent_aliases": [
+        "configure DHCP server",
+        "why are clients not getting addresses"
+      ],
+      "platform_boundary": "Legacy IOS 12.4 DHCP evidence; S08 configuration inspection syntax is separately scoped IOS XE evidence",
+      "prerequisites": [
+        "IOS 12.4 documented boundary only; qualify current IOS XE separately.",
+        "No conflicting DHCP server; subnet interface or relay already provisioned.",
+        "Example addresses require an isolated lab with matching gateway/DNS."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "dhcp-bindings",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "dhcp-show-pool",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [
+          {
+            "command_id": "conf",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "dhcp-exclude",
+            "parameter_values": {
+              "low": "192.0.2.1",
+              "high": "192.0.2.20"
+            },
+            "note": null
+          },
+          {
+            "command_id": "dhcp-pool",
+            "parameter_values": {
+              "pool_name": "USERS"
+            },
+            "note": null
+          },
+          {
+            "command_id": "dhcp-network",
+            "parameter_values": {
+              "prefix": "192.0.2.0",
+              "mask": "255.255.255.0"
+            },
+            "note": null
+          },
+          {
+            "command_id": "dhcp-router",
+            "parameter_values": {
+              "address": "192.0.2.1"
+            },
+            "note": null
+          },
+          {
+            "command_id": "dhcp-dns",
+            "parameter_values": {
+              "address": "198.51.100.53"
+            },
+            "note": null
+          },
+          {
+            "command_id": "end",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "verification": [
+          {
+            "command_id": "dhcp-bindings",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "dhcp-show-pool",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "dhcp-conflict",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Client obtains a lease with intended subnet, gateway and DNS; bindings/pool agree."
+      ],
+      "decision_branches": [],
+      "rollback": {
+        "strategy": "restore_prior_pool_state",
+        "instructions": [
+          "Remove only newly created pool/options/exclusions; preserve prior leases and unrelated pools.",
+          "Do not indiscriminately clear leases/conflicts."
+        ]
+      },
+      "source_ids": [
+        "S01",
+        "S08",
+        "S19"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "save-backup",
+      "task_id": "task-save-backup",
+      "title": "Back up and save validated configuration",
+      "task_category_id": "config",
+      "intent_aliases": [
+        "save my changes",
+        "backup running configuration"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Suitable writable filesystem; active configuration reviewed.",
+        "Secure handling of saved configuration."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "startup",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [
+          {
+            "command_id": "backup",
+            "parameter_values": {
+              "filesystem": "usbflash0",
+              "filename": "prechange.cfg"
+            },
+            "note": null
+          },
+          {
+            "command_id": "save",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "verification": [
+          {
+            "command_id": "startup",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Backup operation completes; startup configuration contains intended validated changes."
+      ],
+      "decision_branches": [],
+      "rollback": {
+        "strategy": "not_generic_restore",
+        "instructions": [
+          "Retain the backup and prior startup state.",
+          "copy into running-config is a merge; qualify a target-specific replacement/rollback feature before using it."
+        ]
+      },
+      "source_ids": [
+        "S08"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    },
+    {
+      "workflow_id": "lacp-check",
+      "task_id": "task-lacp-check",
+      "title": "Verify an existing LACP EtherChannel",
+      "task_category_id": "etherchannel",
+      "intent_aliases": [
+        "why is a LACP port suspended",
+        "check port channel members"
+      ],
+      "platform_boundary": "Catalyst 9300 / IOS XE 17.15.x; evaluate each step source boundary",
+      "prerequisites": [
+        "Identify intended members, protocol and peer configuration."
+      ],
+      "phases": {
+        "pre_check": [
+          {
+            "command_id": "run",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "configuration": [],
+        "verification": [
+          {
+            "command_id": "ether-summary",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "ether-detail",
+            "parameter_values": {
+              "group": 1
+            },
+            "note": null
+          },
+          {
+            "command_id": "lacp-neighbor",
+            "parameter_values": {},
+            "note": null
+          }
+        ],
+        "troubleshooting": [
+          {
+            "command_id": "show-trunk",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "stp-show",
+            "parameter_values": {},
+            "note": null
+          },
+          {
+            "command_id": "show-status",
+            "parameter_values": {},
+            "note": null
+          }
+        ]
+      },
+      "expected_results": [
+        "Expected logical port-channel and bundled member flags, with compatible partner evidence."
+      ],
+      "decision_branches": [
+        {
+          "condition": "Both peers passive",
+          "action": "No LACP initiator; an approved change must enable active on at least one side."
+        },
+        {
+          "condition": "Suspended or individual member",
+          "action": "Compare VLAN, mode, speed and peer aggregation parameters before changing state."
+        }
+      ],
+      "rollback": {
+        "strategy": "none_read_only",
+        "instructions": [
+          "No automatic removal/readdition of members or conversion to static on."
+        ]
+      },
+      "source_ids": [
+        "S02",
+        "S04",
+        "S08",
+        "S28"
+      ],
+      "authorship": "Original task synthesis from cited Cisco documentation; not a Cisco validated design",
+      "validation_status": "documentation_reviewed_not_device_tested"
+    }
+  ],
+  "relationships": [
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "show-switchport",
+      "type": "uses_in_pre_check",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "show-vlan",
+      "type": "uses_in_pre_check",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "conf",
+      "type": "uses_in_configuration",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "vlan",
+      "type": "uses_in_configuration",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "exit",
+      "type": "uses_in_configuration",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "interface",
+      "type": "uses_in_configuration",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "access-mode",
+      "type": "uses_in_configuration",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "access-vlan",
+      "type": "uses_in_configuration",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "end",
+      "type": "uses_in_configuration",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "show-switchport",
+      "type": "uses_in_verification",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "show-vlan",
+      "type": "uses_in_verification",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "show-status",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "show-errors",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-access-vlan20",
+      "to_id": "stp-interface",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "access-vlan20"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "show-trunk",
+      "type": "uses_in_pre_check",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "show-vlan",
+      "type": "uses_in_pre_check",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "conf",
+      "type": "uses_in_configuration",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "interface",
+      "type": "uses_in_configuration",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "trunk-add",
+      "type": "uses_in_configuration",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "end",
+      "type": "uses_in_configuration",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "show-trunk",
+      "type": "uses_in_verification",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "show-switchport",
+      "type": "uses_in_verification",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "stp-show",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-add-trunk-vlan",
+      "to_id": "mac-vlan",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "add-trunk-vlan"
+    },
+    {
+      "from_id": "task-locate-mac",
+      "to_id": "version",
+      "type": "uses_in_pre_check",
+      "workflow_id": "locate-mac"
+    },
+    {
+      "from_id": "task-locate-mac",
+      "to_id": "mac-address",
+      "type": "uses_in_verification",
+      "workflow_id": "locate-mac"
+    },
+    {
+      "from_id": "task-locate-mac",
+      "to_id": "mac-interface",
+      "type": "uses_in_verification",
+      "workflow_id": "locate-mac"
+    },
+    {
+      "from_id": "task-locate-mac",
+      "to_id": "show-status",
+      "type": "uses_in_verification",
+      "workflow_id": "locate-mac"
+    },
+    {
+      "from_id": "task-locate-mac",
+      "to_id": "mac-vlan",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "locate-mac"
+    },
+    {
+      "from_id": "task-locate-mac",
+      "to_id": "show-trunk",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "locate-mac"
+    },
+    {
+      "from_id": "task-locate-mac",
+      "to_id": "stp-show",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "locate-mac"
+    },
+    {
+      "from_id": "task-interface-drops",
+      "to_id": "version",
+      "type": "uses_in_pre_check",
+      "workflow_id": "interface-drops"
+    },
+    {
+      "from_id": "task-interface-drops",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "interface-drops"
+    },
+    {
+      "from_id": "task-interface-drops",
+      "to_id": "show-if",
+      "type": "uses_in_verification",
+      "workflow_id": "interface-drops"
+    },
+    {
+      "from_id": "task-interface-drops",
+      "to_id": "show-errors",
+      "type": "uses_in_verification",
+      "workflow_id": "interface-drops"
+    },
+    {
+      "from_id": "task-interface-drops",
+      "to_id": "show-status",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "interface-drops"
+    },
+    {
+      "from_id": "task-interface-drops",
+      "to_id": "show-ip-if",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "interface-drops"
+    },
+    {
+      "from_id": "task-interface-drops",
+      "to_id": "show-switchport",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "interface-drops"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "show-ip-brief",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "route",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "conf",
+      "type": "uses_in_configuration",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "ospf-process",
+      "type": "uses_in_configuration",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "exit",
+      "type": "uses_in_configuration",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "interface",
+      "type": "uses_in_configuration",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "ospf-interface",
+      "type": "uses_in_configuration",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "end",
+      "type": "uses_in_configuration",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "ospf-neighbor",
+      "type": "uses_in_verification",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "ospf-show-if",
+      "type": "uses_in_verification",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "route-ospf",
+      "type": "uses_in_verification",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "ospf-neighbor-detail",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "ospf-db",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-link",
+      "to_id": "show-ip-if",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-link"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "show-ip-brief",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "ospf-neighbor",
+      "type": "uses_in_verification",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "ospf-show-if",
+      "type": "uses_in_verification",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "ospf-neighbor-detail",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "show-if",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "show-ip-if",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "ospf-db",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-ospf-adjacency",
+      "to_id": "route-ospf",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ospf-adjacency"
+    },
+    {
+      "from_id": "task-bgp-status",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "bgp-status"
+    },
+    {
+      "from_id": "task-bgp-status",
+      "to_id": "route",
+      "type": "uses_in_pre_check",
+      "workflow_id": "bgp-status"
+    },
+    {
+      "from_id": "task-bgp-status",
+      "to_id": "bgp-summary",
+      "type": "uses_in_verification",
+      "workflow_id": "bgp-status"
+    },
+    {
+      "from_id": "task-bgp-status",
+      "to_id": "bgp-neighbor",
+      "type": "uses_in_verification",
+      "workflow_id": "bgp-status"
+    },
+    {
+      "from_id": "task-bgp-status",
+      "to_id": "bgp-table",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "bgp-status"
+    },
+    {
+      "from_id": "task-bgp-status",
+      "to_id": "bgp-advertised",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "bgp-status"
+    },
+    {
+      "from_id": "task-bgp-status",
+      "to_id": "route",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "bgp-status"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "show-ip-if",
+      "type": "uses_in_pre_check",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "acl-show",
+      "type": "uses_in_pre_check",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "conf",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "acl-ext",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "acl-permit-tcp",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "acl-deny-ip",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "exit",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "interface",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "acl-apply",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "end",
+      "type": "uses_in_configuration",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "acl-show",
+      "type": "uses_in_verification",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "show-ip-if",
+      "type": "uses_in_verification",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "route",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-extended-acl",
+      "to_id": "show-if",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "extended-acl"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "version",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "ssh-show",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "show-ip-brief",
+      "type": "uses_in_pre_check",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "conf",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "hostname",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "domain",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "rsa",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "ssh-version",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "line-vty",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "local-login",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "ssh-transport",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "end",
+      "type": "uses_in_configuration",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "ssh-show",
+      "type": "uses_in_verification",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "ssh-sessions",
+      "type": "uses_in_verification",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "run",
+      "type": "uses_in_verification",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "ports-show",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-ssh-only",
+      "to_id": "show-ip-brief",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "ssh-only"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-bindings",
+      "type": "uses_in_pre_check",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-show-pool",
+      "type": "uses_in_pre_check",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "conf",
+      "type": "uses_in_configuration",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-exclude",
+      "type": "uses_in_configuration",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-pool",
+      "type": "uses_in_configuration",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-network",
+      "type": "uses_in_configuration",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-router",
+      "type": "uses_in_configuration",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-dns",
+      "type": "uses_in_configuration",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "end",
+      "type": "uses_in_configuration",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-bindings",
+      "type": "uses_in_verification",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-show-pool",
+      "type": "uses_in_verification",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "dhcp-conflict",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-dhcp-server",
+      "to_id": "run",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "dhcp-server"
+    },
+    {
+      "from_id": "task-save-backup",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "save-backup"
+    },
+    {
+      "from_id": "task-save-backup",
+      "to_id": "startup",
+      "type": "uses_in_pre_check",
+      "workflow_id": "save-backup"
+    },
+    {
+      "from_id": "task-save-backup",
+      "to_id": "backup",
+      "type": "uses_in_configuration",
+      "workflow_id": "save-backup"
+    },
+    {
+      "from_id": "task-save-backup",
+      "to_id": "save",
+      "type": "uses_in_configuration",
+      "workflow_id": "save-backup"
+    },
+    {
+      "from_id": "task-save-backup",
+      "to_id": "startup",
+      "type": "uses_in_verification",
+      "workflow_id": "save-backup"
+    },
+    {
+      "from_id": "task-save-backup",
+      "to_id": "run",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "save-backup"
+    },
+    {
+      "from_id": "task-lacp-check",
+      "to_id": "run",
+      "type": "uses_in_pre_check",
+      "workflow_id": "lacp-check"
+    },
+    {
+      "from_id": "task-lacp-check",
+      "to_id": "ether-summary",
+      "type": "uses_in_verification",
+      "workflow_id": "lacp-check"
+    },
+    {
+      "from_id": "task-lacp-check",
+      "to_id": "ether-detail",
+      "type": "uses_in_verification",
+      "workflow_id": "lacp-check"
+    },
+    {
+      "from_id": "task-lacp-check",
+      "to_id": "lacp-neighbor",
+      "type": "uses_in_verification",
+      "workflow_id": "lacp-check"
+    },
+    {
+      "from_id": "task-lacp-check",
+      "to_id": "show-trunk",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "lacp-check"
+    },
+    {
+      "from_id": "task-lacp-check",
+      "to_id": "stp-show",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "lacp-check"
+    },
+    {
+      "from_id": "task-lacp-check",
+      "to_id": "show-status",
+      "type": "uses_in_troubleshooting",
+      "workflow_id": "lacp-check"
+    }
+  ]
+}

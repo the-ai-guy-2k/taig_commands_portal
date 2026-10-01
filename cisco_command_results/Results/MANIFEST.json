@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "aci": "ACI-TAIG2K-CISCO-COMMAND-KNOWLEDGE-RESEARCH-001",
+    "schema_version": "1.0.0",
+    "dataset_version": "0.1.0",
+    "generated_at": "2026-10-01",
+    "status": "PARTIAL",
+    "completeness_claim": false,
+    "coverage_boundary": "Selected task forms, chiefly Catalyst 9300 IOS XE 17.15.x; separately scoped router and legacy IOS references",
+    "command_count": 100,
+    "workflow_count": 12,
+    "taxonomy_feature_group_count": 55,
+    "source_count": 29,
+    "lab_validation": false
+  },
+  "validation": {
+    "json_parse": "passed",
+    "json_schema_contract": "passed; local checker covers every assertion keyword used in supplied schema (type, required, properties, items, const, minItems, minLength)",
+    "unique_command_ids": "passed",
+    "source_task_category_command_references": "passed",
+    "workflow_parameter_names": "passed",
+    "device_or_parser_validation": "not_performed"
+  },
+  "files": [
+    {
+      "filename": "Cisco_Command_Dataset.json",
+      "size_bytes": 353622,
+      "sha256": "a03b0ea91063232638dc5d0eadd99b8e0826dcb6a04e621da902af710abf7a98"
+    },
+    {
+      "filename": "Cisco_Command_Dataset.schema.json",
+      "size_bytes": 3327,
+      "sha256": "331f4cde0c015313c08938b8b8a699a57e8465194b329a41f94988739e8471a8"
+    },
+    {
+      "filename": "Cisco_Command_Knowledge_Research_Report.md",
+      "size_bytes": 7285,
+      "sha256": "fb821120a6df2544cd6099c5de9890f4562b8f76761a9a4c0f35eeaa6dadee24"
+    },
+    {
+      "filename": "Cisco_Coverage_Known_Gaps.json",
+      "size_bytes": 14855,
+      "sha256": "2850d990ef8cc7043c423b8bd0ba5da87bee9f7e81b50028ed378b1d48941de9"
+    },
+    {
+      "filename": "Cisco_Coverage_Known_Gaps_Report.md",
+      "size_bytes": 4870,
+      "sha256": "3057dad35d7732a05c95b2b033a056dcede2c114b51505301f719749a50810c9"
+    },
+    {
+      "filename": "Cisco_Source_Index.json",
+      "size_bytes": 18026,
+      "sha256": "eefede1910b0e5f622e1a99b9fd61cde9915055ad90145c262bc9ef560edd26b"
+    },
+    {
+      "filename": "Cisco_Task_Intent_Taxonomy.json",
+      "size_bytes": 27448,
+      "sha256": "82c042d06fc16350cfbb4fd76a90db083330e2a628bd0edb8f0d10b1f52097be"
+    },
+    {
+      "filename": "Cisco_Task_Workflows.json",
+      "size_bytes": 58975,
+      "sha256": "a56831423e042f2bed06f074839f1bce777da82b10242e4c1f3abb74f57672a2"
+    },
+    {
+      "filename": "README.md",
+      "size_bytes": 3636,
+      "sha256": "a0a7b712c094eba30a90ddc0c1cbe8f18648061e8500609c3da012a05cdbcdff"
+    }
+  ]
+}
