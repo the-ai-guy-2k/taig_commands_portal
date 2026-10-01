@@ -16,10 +16,19 @@ main {
   padding: 2.5rem 1.25rem 4rem;
 }
 
+h1,
+h2 {
+  line-height: 1.2;
+}
+
 h1 {
   font-size: 1.75rem;
-  line-height: 1.2;
   margin-bottom: 0.25rem;
+}
+
+h2 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
 }
 
 .lede {
