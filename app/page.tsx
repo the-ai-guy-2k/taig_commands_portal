@@ -1,7 +1,15 @@
 import { loadKnowledgePackage } from "@/lib/knowledge";
 import { discoverTaskInputContract, validateTaskInputs } from "@/lib/inputs";
+import { renderWorkflowCommands } from "@/lib/rendering";
 import { buildTaskCatalog, INITIAL_VERTICAL_SLICE_TASK_IDS, resolveTask } from "@/lib/tasks";
 import { resolveWorkflow } from "@/lib/workflows";
+
+const PROOF_RENDER_VALUES: Record<string, Record<string, string | number>> = {
+  "task-locate-mac": { mac: "aabb.ccdd.eeff", interface: "Gi1/0/24", vlan_id: 30 },
+  "task-interface-drops": { interface: "Gi1/0/24" },
+  "task-lacp-check": { group: 5 },
+  "task-add-trunk-vlan": { interface: "Gi1/0/48", vlan_list: "30,40", vlan_id: 30 },
+};
 
 export const dynamic = "force-dynamic";
 
@@ -18,37 +26,29 @@ export default async function HomePage() {
               state: resolved.state,
               inputs: [] as string[],
               missing: [] as string[],
-              workflowState: resolved.state,
-              workflowId: "",
-              rollback: "",
-              coverage: "",
-              phases: [] as string[],
-              sources: "",
+              renderState: resolved.state,
+              activity: "",
+              commands: [] as string[],
             };
           }
           const discovery = discoverTaskInputContract(loaded.knowledge, resolved.task);
           const emptyValidation = validateTaskInputs(discovery, {});
-          const readyValues = discovery.ok
-            ? Object.fromEntries(
-                discovery.contract.inputs.filter((input) => input.requirement === "required").map((input) => [input.inputKey, input.exampleValue]),
-              )
-            : {};
-          const readyValidation = validateTaskInputs(discovery, readyValues);
+          const readyValidation = validateTaskInputs(discovery, PROOF_RENDER_VALUES[taskId] ?? {});
           const workflow = resolveWorkflow(loaded.knowledge, resolved.task, discovery, readyValidation);
-          const resolvedWorkflow = workflow.state === "RESOLVED" ? workflow.workflows[0] : null;
+          const rendered = renderWorkflowCommands(loaded.knowledge, workflow, readyValidation);
           return {
             taskId,
             state: emptyValidation.state,
             inputs: discovery.ok ? discovery.contract.inputs.map((input) => `${input.inputKey} (${input.requirement})`) : [],
             missing: emptyValidation.missing.map((item) => item.inputKey),
-            workflowState: workflow.state,
-            workflowId: resolvedWorkflow?.workflowId ?? "",
-            rollback: resolvedWorkflow?.rollbackStrategy ?? "",
-            coverage: workflow.state === "RESOLVED" ? workflow.support.taskCoverageStatus : "",
-            phases: resolvedWorkflow
-              ? resolvedWorkflow.phases.map((phase) => `${phase.phase} ${phase.steps.length}: ${phase.steps.map((step) => step.commandId).join(", ")}`)
-              : [],
-            sources: resolvedWorkflow?.sourceIds.join(", ") ?? "",
+            renderState: rendered.state,
+            activity: rendered.state === "RENDERED" ? rendered.activityEvidence : "",
+            commands:
+              rendered.state === "RENDERED"
+                ? rendered.workflows[0].phases.flatMap((phase) =>
+                    phase.commands.map((command) => `${phase.phase} ${command.commandId}: ${command.renderedCommand}`),
+                  )
+                : [],
           };
         })
       : [];
@@ -58,8 +58,8 @@ export default async function HomePage() {
       <h1>TAIG Command Portal</h1>
       <p className="lede">
         The portal loads the Cisco research package, resolves task identity, checks required inputs,
-        and resolves the workflow and command references. It does not render commands or generate a
-        procedure.
+        resolves the workflow, and renders each command template with the validated engineer value.
+        It does not assemble a procedure.
       </p>
       {loaded.ok && catalog?.ok === true ? (
         <>
@@ -93,25 +93,24 @@ export default async function HomePage() {
               <code>{catalog.catalog.package.directory}</code>
             </dd>
           </dl>
-          <h2>Initial task workflows</h2>
+          <h2>Initial rendered commands</h2>
           <ul>
             {proof.map((item) => (
               <li key={item.taskId}>
-                <code>{item.taskId}</code> — {item.state}
-                {item.inputs.length > 0 ? `; required: ${item.inputs.join(", ")}` : ""}
+                <code>{item.taskId}</code> — empty input {item.state}
                 {item.missing.length > 0 ? `; missing: ${item.missing.join(", ")}` : ""}
-                {item.workflowState === "RESOLVED" ? (
+                {item.renderState === "RENDERED" ? (
                   <>
                     {" "}
-                    — workflow <code>{item.workflowId}</code>, {item.rollback}, {item.coverage}; sources {item.sources}
+                    — proof values {item.renderState}, {item.activity}
                     <ul>
-                      {item.phases.map((phase) => (
-                        <li key={phase}>{phase}</li>
+                      {item.commands.map((command) => (
+                        <li key={command}>{command}</li>
                       ))}
                     </ul>
                   </>
                 ) : (
-                  <> — workflow {item.workflowState}</>
+                  <> — proof values {item.renderState}</>
                 )}
               </li>
             ))}
