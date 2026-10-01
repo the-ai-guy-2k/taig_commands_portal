@@ -1,5 +1,6 @@
 import { loadKnowledgePackage } from "@/lib/knowledge";
 import { discoverTaskInputContract, validateTaskInputs } from "@/lib/inputs";
+import { generateProcedure } from "@/lib/procedures";
 import { renderWorkflowCommands } from "@/lib/rendering";
 import { buildTaskCatalog, INITIAL_VERTICAL_SLICE_TASK_IDS, resolveTask } from "@/lib/tasks";
 import { resolveWorkflow } from "@/lib/workflows";
@@ -24,11 +25,16 @@ export default async function HomePage() {
             return {
               taskId,
               state: resolved.state,
-              inputs: [] as string[],
               missing: [] as string[],
-              renderState: resolved.state,
+              procedureState: resolved.state,
               activity: "",
-              commands: [] as string[],
+              workflowId: "",
+              rollback: "",
+              coverage: "",
+              completeness: "",
+              labValidation: "",
+              knownGaps: 0,
+              sections: [] as string[],
             };
           }
           const discovery = discoverTaskInputContract(loaded.knowledge, resolved.task);
@@ -36,19 +42,27 @@ export default async function HomePage() {
           const readyValidation = validateTaskInputs(discovery, PROOF_RENDER_VALUES[taskId] ?? {});
           const workflow = resolveWorkflow(loaded.knowledge, resolved.task, discovery, readyValidation);
           const rendered = renderWorkflowCommands(loaded.knowledge, workflow, readyValidation);
+          const procedure = generateProcedure(loaded.knowledge, resolved.task, discovery, readyValidation, workflow, rendered);
+          const generatedWorkflow = procedure.state === "GENERATED" ? procedure.workflows[0] : null;
           return {
             taskId,
             state: emptyValidation.state,
-            inputs: discovery.ok ? discovery.contract.inputs.map((input) => `${input.inputKey} (${input.requirement})`) : [],
             missing: emptyValidation.missing.map((item) => item.inputKey),
-            renderState: rendered.state,
-            activity: rendered.state === "RENDERED" ? rendered.activityEvidence : "",
-            commands:
-              rendered.state === "RENDERED"
-                ? rendered.workflows[0].phases.flatMap((phase) =>
-                    phase.commands.map((command) => `${phase.phase} ${command.commandId}: ${command.renderedCommand}`),
-                  )
-                : [],
+            procedureState: procedure.state,
+            activity: procedure.state === "GENERATED" ? procedure.activityEvidence : "",
+            workflowId: generatedWorkflow?.workflowId ?? "",
+            rollback: generatedWorkflow?.rollback.strategy ?? "",
+            coverage: procedure.state === "GENERATED" ? procedure.support.taskCoverageStatus : "",
+            completeness: procedure.state === "GENERATED" ? String(procedure.support.completenessClaim) : "",
+            labValidation: procedure.state === "GENERATED" ? String(procedure.support.labValidation) : "",
+            knownGaps: procedure.state === "GENERATED" ? procedure.support.knownGaps.length : 0,
+            sections: generatedWorkflow
+              ? generatedWorkflow.sections.map((section) =>
+                  section.steps.length === 0
+                    ? `${section.phase}: empty`
+                    : `${section.phase}: ${section.steps.map((step) => step.renderedCommand).join(" | ")}`,
+                )
+              : [],
           };
         })
       : [];
@@ -57,9 +71,9 @@ export default async function HomePage() {
     <main>
       <h1>TAIG Command Portal</h1>
       <p className="lede">
-        The portal loads the Cisco research package, resolves task identity, checks required inputs,
-        resolves the workflow, and renders each command template with the validated engineer value.
-        It does not assemble a procedure.
+        The portal loads the Cisco research package, resolves a task, checks its inputs, renders the
+        workflow commands, and assembles those commands into a procedure. It does not add commands or
+        authorize device execution.
       </p>
       {loaded.ok && catalog?.ok === true ? (
         <>
@@ -93,24 +107,25 @@ export default async function HomePage() {
               <code>{catalog.catalog.package.directory}</code>
             </dd>
           </dl>
-          <h2>Initial rendered commands</h2>
+          <h2>Initial procedures</h2>
           <ul>
             {proof.map((item) => (
               <li key={item.taskId}>
                 <code>{item.taskId}</code> — empty input {item.state}
                 {item.missing.length > 0 ? `; missing: ${item.missing.join(", ")}` : ""}
-                {item.renderState === "RENDERED" ? (
+                {item.procedureState === "GENERATED" ? (
                   <>
                     {" "}
-                    — proof values {item.renderState}, {item.activity}
+                    — {item.procedureState}, {item.activity}, {item.workflowId}, rollback {item.rollback}, {item.coverage},
+                    completeness {item.completeness}, lab validation {item.labValidation}, known gaps {item.knownGaps}
                     <ul>
-                      {item.commands.map((command) => (
-                        <li key={command}>{command}</li>
+                      {item.sections.map((section) => (
+                        <li key={section}>{section}</li>
                       ))}
                     </ul>
                   </>
                 ) : (
-                  <> — proof values {item.renderState}</>
+                  <> — {item.procedureState}</>
                 )}
               </li>
             ))}
