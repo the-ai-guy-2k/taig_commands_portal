@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "TAIG Command Portal",
-  description: "Knowledge contract and loader foundation for Cisco command guidance.",
+  description: "Engineer task discovery for Cisco guidance. The portal does not control devices.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
