@@ -153,6 +153,7 @@ describe("dynamic task form and procedure generation", () => {
         invalid: [],
         conflicts: [],
         unknownInputs: [],
+        unsupported: [],
         deviceExecutionAuthorized: false,
       },
       procedure: {
@@ -197,6 +198,20 @@ describe("dynamic task form and procedure generation", () => {
 
     const stale = applyRun(edited, generated, started.generationId);
     expect(stale.result).toBeNull();
+
+    const replaced = applyRun(
+      session,
+      {
+        kind: "DATA_ERROR",
+        errors: [{ code: "PACKAGE_UNREADABLE", message: "The knowledge package could not be read." }],
+        procedure: null,
+        deviceExecutionAuthorized: false,
+      },
+      session.generationId,
+    );
+    expect(replaced.status).toBe("DATA_ERROR");
+    expect(replaced.result?.kind).toBe("DATA_ERROR");
+    expect(replaced.result?.procedure).toBeNull();
 
     const switched = selectTask(edited, "task-interface-drops");
     expect(switched.taskId).toBe("task-interface-drops");

@@ -1,3 +1,4 @@
+import { presentTaskSupport } from "../coverage/present";
 import type { ActivityEvidence, WorkflowAvailability } from "../tasks/types";
 import type { DiscoveryTask, SelectedTaskHandoff } from "./types";
 
@@ -16,11 +17,8 @@ export function activityLabel(activity: ActivityEvidence): string {
 }
 
 export function selectionNotice(task: DiscoveryTask): string {
-  if (task.workflowAvailability === "absent") {
-    return "Command guidance only. Workflow not established. Procedure not available.";
-  }
-  const validation = task.validationStatus ?? "not established";
-  return `Workflow available. Coverage ${task.coverageStatus}. Validation ${validation}. Enter the required inputs and generate the procedure. Ready does not authorize device execution.`;
+  const notice = presentTaskSupport(task);
+  return `${notice.headline} ${notice.explanation}`;
 }
 
 export function selectedTaskHandoff(task: DiscoveryTask): SelectedTaskHandoff {

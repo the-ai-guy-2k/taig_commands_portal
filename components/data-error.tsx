@@ -1,13 +1,13 @@
+import { FailurePanel } from "@/components/coverage-presentation";
+import { presentLoaderFailure } from "@/lib/coverage/present";
 import type { DiscoveryPageError } from "@/lib/discovery/types";
 
 export function DataError({ errors }: { errors: readonly DiscoveryPageError[] }) {
+  const notice = presentLoaderFailure(errors);
   return (
-    <section className="panel error-panel" data-ui-state="DATA_ERROR" role="alert">
-      <h2>Task catalog unavailable</h2>
-      <p>
-        The portal cannot show tasks because the knowledge package or task catalog did not load. No
-        substitute task list is available.
-      </p>
+    <section className="panel error-panel" data-ui-state="DATA_ERROR">
+      <h2>Knowledge package unavailable</h2>
+      <FailurePanel notice={notice} />
       <ul>
         {errors.map((error) => (
           <li key={`${error.code}:${error.message}`}>

@@ -1,5 +1,6 @@
 "use client";
 
+import { fieldIssue } from "@/lib/coverage/present";
 import type { FormFieldView, ValidationView } from "@/lib/portal/types";
 
 export function TaskForm({
@@ -33,10 +34,9 @@ export function TaskForm({
         values. This form does not check Cisco address, VLAN, or interface grammar.
       </p>
       {fields.map((field) => {
-        const missing = validation?.missing.some((item) => item.inputKey === field.inputKey) ?? false;
-        const invalid = validation?.invalid.find((item) => item.inputKey === field.inputKey);
+        const issue = fieldIssue(validation, field.inputKey);
         const describedBy = [`${fieldId(taskId, field.inputKey)}-help`];
-        if (missing || invalid) {
+        if (issue) {
           describedBy.push(`${fieldId(taskId, field.inputKey)}-error`);
         }
         return (
@@ -51,7 +51,7 @@ export function TaskForm({
               type="text"
               autoComplete="off"
               value={values[field.inputKey] ?? ""}
-              aria-invalid={missing || Boolean(invalid)}
+              aria-invalid={Boolean(issue)}
               aria-describedby={describedBy.join(" ")}
               onChange={(event) => onChange(field.inputKey, event.target.value)}
             />
@@ -59,9 +59,9 @@ export function TaskForm({
               Example from the research package: {field.exampleValue}. This is not your input.
               {field.range ? ` Recorded range note: ${field.range}.` : ""}
             </p>
-            {missing || invalid ? (
+            {issue ? (
               <p id={`${fieldId(taskId, field.inputKey)}-error`} className="field-error">
-                {invalid?.message ?? "NEEDS_INPUT. This required value is missing."}
+                {issue.message}
               </p>
             ) : null}
           </div>

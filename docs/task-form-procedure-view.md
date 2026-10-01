@@ -76,4 +76,4 @@ The form does not collect a device username, password, enable secret, SSH key, S
 
 ## ACI-009 handoff
 
-ACI-009 is Failure / Coverage UX. This capability does not add a failure-coverage screen, a validated badge, or a change to `seed_partial`, completeness, or lab-validation truth. Those facts stay visible on the generated procedure and in the shell note.
+Failure and coverage language is presented in `docs/failure-coverage-ux.md`. This document does not change `seed_partial`, completeness, or lab-validation truth.

@@ -111,9 +111,8 @@ describe("engineer task discovery", () => {
     expect(found.activityEvidence).toBe("not_established");
     expect(found.platformBoundary).toBeNull();
     expect(selectedTaskHandoff(found).taskId).toBe("task-command-reload");
-    expect(selectionNotice(found)).toBe(
-      "Command guidance only. Workflow not established. Procedure not available.",
-    );
+    expect(selectionNotice(found)).toContain("Workflow not established");
+    expect(selectionNotice(found)).toContain("Procedure not available");
   });
 
   it("filters by category and text without choosing a winner", async () => {

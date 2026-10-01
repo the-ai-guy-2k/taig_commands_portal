@@ -30,6 +30,7 @@ export interface ValidationView {
   invalid: readonly { inputKey: string; message: string }[];
   conflicts: readonly { message: string }[];
   unknownInputs: readonly string[];
+  unsupported: readonly { parameterName: string; constraint: string }[];
   deviceExecutionAuthorized: false;
 }
 
@@ -108,6 +109,8 @@ export type ProcedureRun =
       state: string;
       reason: string;
       messages: readonly string[];
+      candidates: readonly { taskId: string; title: string }[];
+      matchedExclusion: string | null;
       procedure: null;
       deviceExecutionAuthorized: false;
     }

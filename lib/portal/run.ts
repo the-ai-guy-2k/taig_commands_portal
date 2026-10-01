@@ -25,6 +25,7 @@ export async function runTaskProcedure(
         invalid: [{ inputKey: "", message: "Task inputs must be an object of strings." }],
         conflicts: [],
         unknownInputs: [],
+        unsupported: [],
         deviceExecutionAuthorized: false,
       },
     };
@@ -50,12 +51,22 @@ export async function runTaskProcedure(
   }
 
   const resolved = getTaskById(catalog.catalog, taskId);
+  if (resolved.state === "DATA_ERROR") {
+    return {
+      kind: "DATA_ERROR",
+      procedure: null,
+      deviceExecutionAuthorized: false,
+      errors: resolved.errors.map((error) => ({ code: error.code, message: error.message })),
+    };
+  }
   if (resolved.state !== "RESOLVED") {
     return {
       kind: "BLOCKED",
       state: resolved.state,
       reason: "reason" in resolved ? resolved.reason : resolved.state,
-      messages: ["The requested task is not an accepted catalog identity."],
+      messages: [],
+      candidates: resolved.state === "AMBIGUOUS" ? resolved.candidates : [],
+      matchedExclusion: resolved.state === "UNSUPPORTED" ? resolved.matchedExclusion : null,
       procedure: null,
       deviceExecutionAuthorized: false,
     };
@@ -80,6 +91,8 @@ export async function runTaskProcedure(
         procedure.failures.length > 0
           ? procedure.failures.map((failure) => failure.message)
           : [`${procedure.state}: ${procedure.reason}`],
+      candidates: [],
+      matchedExclusion: null,
       procedure: null,
       deviceExecutionAuthorized: false,
     };
@@ -95,6 +108,7 @@ function toValidationView(validation: {
   invalid: ValidationView["invalid"];
   conflicts: ValidationView["conflicts"];
   unknownInputs: readonly string[];
+  unsupported: ValidationView["unsupported"];
 }): ValidationView {
   return {
     state: validation.state,
@@ -103,6 +117,10 @@ function toValidationView(validation: {
     invalid: validation.invalid.map((item) => ({ inputKey: item.inputKey, message: item.message })),
     conflicts: validation.conflicts.map((item) => ({ message: item.message })),
     unknownInputs: [...validation.unknownInputs],
+    unsupported: validation.unsupported.map((item) => ({
+      parameterName: item.parameterName,
+      constraint: item.constraint,
+    })),
     deviceExecutionAuthorized: false,
   };
 }

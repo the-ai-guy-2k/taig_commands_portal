@@ -1,14 +1,29 @@
 "use client";
 
-import { useMemo, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
+import {
+  CoverageBadge,
+  FailurePanel,
+  PackageCoverage,
+  PlatformBoundary,
+  SupportNotice,
+  ValidationNotice,
+} from "@/components/coverage-presentation";
 import { ProcedureView } from "@/components/procedure-view";
 import { TaskForm } from "@/components/task-form";
+import {
+  coverageLabel,
+  packageCoverageFacts,
+  presentProcedureRun,
+  presentSearchMiss,
+  presentTaskSupport,
+  presentUnavailableForm,
+} from "@/lib/coverage/present";
 import { filterDiscoveryTasks } from "@/lib/discovery/filter";
-import { activityLabel, selectedTaskHandoff, selectionNotice, workflowLabel } from "@/lib/discovery/support";
+import { activityLabel, selectedTaskHandoff, workflowLabel } from "@/lib/discovery/support";
 import type { DiscoveryCatalog, DiscoveryTask } from "@/lib/discovery/types";
 import { generateTaskProcedure } from "@/lib/portal/actions";
-import { validationMessage } from "@/lib/portal/messages";
-import { applyRun, beginGeneration, changeInput, emptyFormSession, selectTask } from "@/lib/portal/session";
+import { applyRun, changeInput, emptyFormSession, selectTask } from "@/lib/portal/session";
 import type { FormSession, TaskFormView } from "@/lib/portal/types";
 
 export function TaskDiscovery({
@@ -29,6 +44,26 @@ export function TaskDiscovery({
   );
   const selected = catalog.tasks.find((task) => task.taskId === selectedId) ?? null;
   const listState = visible.length === 0 ? "NO_MATCHES" : selected ? "SELECTED" : "READY";
+  const packageFacts = packageCoverageFacts({
+    status: catalog.status,
+    completenessClaim: catalog.completenessClaim,
+    labValidation: catalog.labValidation,
+    validationStatus:
+      [...new Set(catalog.tasks.map((task) => task.validationStatus).filter((status): status is string => Boolean(status)))].join(
+        ", ",
+      ) || "not established",
+    platform: catalog.primaryBoundary.platform,
+    software: catalog.primaryBoundary.software,
+    release: catalog.primaryBoundary.release,
+    excludedSoftware: catalog.excludedSoftware,
+  });
+
+  useEffect(() => {
+    if (!session.result || session.result.kind === "GENERATED") {
+      return;
+    }
+    document.getElementById("generation-status")?.focus();
+  }, [session.generationId, session.result]);
 
   function onListKeyDown(event: KeyboardEvent<HTMLUListElement>) {
     if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
@@ -49,21 +84,17 @@ export function TaskDiscovery({
 
   return (
     <>
-      <p className="limitation" role="note">
-        Partial knowledge base. Documentation reviewed. Not device tested. Status {catalog.status}.
-        Completeness claim {String(catalog.completenessClaim)}. Lab validation {String(catalog.labValidation)}.
+      <PackageCoverage facts={packageFacts} />
+      <PlatformBoundary
+        platform={catalog.primaryBoundary.platform}
+        software={catalog.primaryBoundary.software}
+        release={catalog.primaryBoundary.release}
+        excludedSoftware={catalog.excludedSoftware}
+      />
+      <p className="context-bar">
+        {catalog.counts.tasks} tasks · {catalog.counts.workflowBacked} workflow-backed · {catalog.counts.commandOnly}{" "}
+        command-only
       </p>
-      <div className="context-bar">
-        <p>
-          Primary research boundary: {catalog.primaryBoundary.platform} / {catalog.primaryBoundary.software}{" "}
-          {catalog.primaryBoundary.release}
-        </p>
-        <p>Excluded software: {catalog.excludedSoftware.join(", ")}</p>
-        <p>
-          {catalog.counts.tasks} tasks · {catalog.counts.workflowBacked} workflow-backed ·{" "}
-          {catalog.counts.commandOnly} command-only
-        </p>
-      </div>
       <div className="workspace">
         <section className="panel catalog-panel" aria-labelledby="catalog-heading" data-ui-state={listState}>
           <div className="toolbar">
@@ -97,9 +128,7 @@ export function TaskDiscovery({
             </p>
           </div>
           {visible.length === 0 ? (
-            <p className="empty" role="status">
-              No catalog tasks match this filter. No task identity was created from the search text.
-            </p>
+            <SupportNotice notice={presentSearchMiss(text)} />
           ) : (
             <ul className="task-list" data-task-list onKeyDown={onListKeyDown}>
               {visible.map((task) => (
@@ -174,12 +203,9 @@ function TaskButton({
       <span className="task-id">{task.taskId}</span>
       <span className="task-meta">
         <span>{task.categoryLabel}</span>
-        <span className={task.workflowAvailability === "present" ? "badge workflow" : "badge command"}>
-          {workflowLabel(task.workflowAvailability)}
-        </span>
-        <span className={task.coverageStatus === "seed_partial" ? "badge partial" : "badge"}>
-          {task.coverageStatus}
-        </span>
+        <CoverageBadge label={workflowLabel(task.workflowAvailability)} />
+        <CoverageBadge label={coverageLabel(task.coverageStatus)} />
+        <CoverageBadge label="Not device tested" />
         {task.inInitialVerticalSlice ? <span className="badge">Initial slice</span> : null}
       </span>
     </button>
@@ -202,13 +228,14 @@ function SelectedTask({
   const handoff = selectedTaskHandoff(task);
   const commandOnly = handoff.workflowAvailability === "absent";
   const validation = session.result?.kind === "VALIDATION" ? session.result.validation : null;
+  const runNotice = session.result ? presentProcedureRun(session.result) : null;
   return (
     <div
       data-selection-state={commandOnly ? "WORKFLOW_NOT_ESTABLISHED" : "SELECTED"}
       data-generation-state={session.status}
     >
       <h2>Selected task</h2>
-      <p className={commandOnly ? "notice command" : "notice workflow"}>{selectionNotice(task)}</p>
+      <SupportNotice notice={presentTaskSupport(task)} />
       <dl>
         <dt>Title</dt>
         <dd>{handoff.title}</dd>
@@ -242,23 +269,18 @@ function SelectedTask({
           onGenerate={onGenerate}
         />
       ) : (
-        <p className="notice command" role="alert">
-          {form?.errors[0]?.message ?? "The input contract is not available. No procedure form is shown."}
-        </p>
+        <FailurePanel notice={presentUnavailableForm(form)} />
       )}
-      <p role="status">
-        {session.status === "GENERATING"
-          ? "Generating the procedure from the catalog. This does not contact a device."
-          : validation
-            ? validationMessage(validation)
-            : session.result?.kind === "BLOCKED"
-              ? `${session.result.state}. ${session.result.messages.join(" ")}`
-              : session.result?.kind === "DATA_ERROR"
-                ? `DATA_ERROR. ${session.result.errors.map((error) => error.message).join(" ")}`
-                : session.result?.kind === "GENERATED"
-                  ? "READY. GENERATED. The procedure below uses the submitted values. Device execution is not authorized."
-                  : ""}
-      </p>
+      {session.status === "GENERATING" ? (
+        <p role="status">Generating the procedure from the catalog. This does not contact a device.</p>
+      ) : null}
+      {runNotice ? (
+        runNotice.category === "blocking" ? (
+          <FailurePanel id="generation-status" notice={runNotice} />
+        ) : (
+          <ValidationNotice id="generation-status" notice={runNotice} />
+        )
+      ) : null}
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { KnownGapsPanel, ProcedureStatus } from "@/components/coverage-presentation";
+import { sourceBoundaryNote } from "@/lib/coverage/present";
 import { activityLabel } from "@/lib/discovery/support";
 import type { ProcedurePresentation } from "@/lib/portal/types";
 
@@ -13,13 +15,42 @@ const PHASE_LABEL: Record<string, string> = {
 
 export function ProcedureView({ procedure }: { procedure: ProcedurePresentation }) {
   return (
-    <section className="panel procedure" id="procedure" aria-labelledby="procedure-heading">
+    <section
+      className={`panel procedure ${procedure.activityEvidence === "configuration_changing" ? "changing" : "readonly"}`}
+      id="procedure"
+      aria-labelledby="procedure-heading"
+      data-activity={procedure.activityEvidence}
+    >
       <h2 id="procedure-heading">Generated procedure</h2>
-      <p className="notice workflow">
-        Device execution is not authorized. Copying a command does not run it. Coverage {procedure.support.taskCoverageStatus}.
-        Completeness claim {String(procedure.support.completenessClaim)}. Lab validation {String(procedure.support.labValidation)}.
-        Validation {procedure.validationStatus}.
+      <ProcedureStatus
+        activity={procedure.activityEvidence}
+        activityLabel={activityLabel(procedure.activityEvidence)}
+        configurationRequired={procedure.configurationRequired}
+        deviceExecutionAuthorized={procedure.deviceExecutionAuthorized}
+      />
+      <p className="notice application">
+        Generation succeeded as an application result. It is not proof of live-device validity. Copying a command does not
+        run it.
       </p>
+      <h3>Coverage and support</h3>
+      <dl>
+        <dt>Task coverage</dt>
+        <dd>{procedure.support.taskCoverageStatus}</dd>
+        <dt>Package status</dt>
+        <dd>{procedure.support.packageStatus}</dd>
+        <dt>Validation status</dt>
+        <dd>{procedure.support.validationStatus ?? procedure.validationStatus}</dd>
+        <dt>Completeness claim</dt>
+        <dd>{String(procedure.support.completenessClaim)}</dd>
+        <dt>Lab validation</dt>
+        <dd>{String(procedure.support.labValidation)}</dd>
+        <dt>Platform boundary</dt>
+        <dd>{procedure.platformBoundary}</dd>
+        <dt>Known gaps</dt>
+        <dd>{procedure.support.knownGaps.length}</dd>
+        <dt>Device execution authorized</dt>
+        <dd>{String(procedure.deviceExecutionAuthorized)}</dd>
+      </dl>
 
       <h3>Task summary</h3>
       <dl>
@@ -132,23 +163,19 @@ export function ProcedureView({ procedure }: { procedure: ProcedurePresentation 
 
       <h3>Sources</h3>
       <ul className="plain-list">
-        {procedure.sources.map((source) => (
-          <li key={source.sourceId}>
-            <code>{source.sourceId}</code> {source.title}. {source.platformBoundary}. {source.releaseBoundary}.
-          </li>
-        ))}
+        {procedure.sources.map((source) => {
+          const boundaryNote = sourceBoundaryNote(source, procedure.environment.primaryBoundary);
+          return (
+            <li key={source.sourceId}>
+              <code>{source.sourceId}</code> {source.title}. Platform {source.platformBoundary}. Release{" "}
+              {source.releaseBoundary}.
+              {boundaryNote ? ` ${boundaryNote}` : ""}
+            </li>
+          );
+        })}
       </ul>
 
-      <h3>Known gaps</h3>
-      <p>
-        {procedure.support.knownGaps.length} recorded gap{procedure.support.knownGaps.length === 1 ? "" : "s"}. Coverage
-        remains partial.
-      </p>
-      <ul className="gap-list">
-        {procedure.support.knownGaps.map((gap) => (
-          <li key={gap}>{gap}</li>
-        ))}
-      </ul>
+      <KnownGapsPanel gaps={procedure.support.knownGaps} />
     </section>
   );
 }
